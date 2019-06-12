@@ -1,0 +1,45 @@
+<% if(typeof results !== "undefined"){ %>
+    <% if(results.total > 0){ %>
+    <div class="container podcasts">
+        <h1>Podcasts</h1>
+        <% 
+            //Columns must be a factor of 12 (1,2,3,4,6,12)
+            let numOfCols = 3;
+            let rowCount = 0;
+            let bootstrapColWidth = 12 / numOfCols;
+        %>
+        <div class="row">
+            <% for(var i = 0; i < 10; i++){ %>
+                <div class="col-sm-<%= bootstrapColWidth %>">
+                    <div class="card">
+                        <img class="card-img-top" src="<%= results.results[i].image %>" alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title"><%= results.results[i].title_original %></h5>
+                            <h6 class="card-subtitle mb-2 text-muted"><%= results.results[i].publisher_original %> <br> <% var d = new Date(results.results[i].pub_date_ms) %><%= d.toDateString() %></h6>
+                            <div class="scrollable"><p class="card-text"><%= results.results[i].description_original %></p></div>
+                            <a href="<%= results.results[i].listennotes_url %>" class="card-link">Learn More!</a>
+                        </div>
+                    </div>
+                    <audio controls src="<%= results.results[i].audio %>">
+                        <div style="border: 1px solid black ; padding: 8px ;">
+                            Sorry, your browser does not support the <audio> tag used in this demo.
+                        </div>
+                    </audio>
+                </div>
+                <% 
+                    rowCount++; 
+                %>
+                <% if(rowCount % numOfCols == 0){ %>
+                    </div><div class="row">
+                <% } %>
+            <% } %>
+        </div>
+    </div>
+    <% }else{ %>
+        <div class="container podcasts">
+            <div class="alert alert-danger">
+                <strong>No search results were found! Please try again</strong>
+            </div>
+        </div>
+    <% } %>
+<% } %>
